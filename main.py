@@ -1,22 +1,9 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-"""
- XianxiaInfo Crawler application
-
- @author Hongwei Ai
- @date 2021/7/17
- Copyright (C) 2017 XianxiaInfo.
-
- This software is the confidential and proprietary information of XianxiaInfo.com
- ("Confidential Information"). You shall not disclose such Confidential Information and shall
- use it only in accordance with the terms of the license agreement you entered
- into with XianxiaInfo.com.
- 
-"""
 
 import random
 
-## get wolf position
+## get random position
 def getRandomPosition(count):
 
     wolfPosition = []
@@ -34,6 +21,19 @@ def getRandomPosition(count):
 
     return wolfPosition
 
+def shuffle(raw_list):
+
+    begin = 0
+    end = len(raw_list) - 1
+    for i in range(5000):
+        p1 = random.randint(begin, end)
+        p2 = random.randint(begin, end)
+
+        raw_list[p1], raw_list[p2] = raw_list[p2], raw_list[p1]
+
+    return raw_list
+
+
 if __name__ == "__main__":
 
     ## 随机猜6个位置
@@ -50,11 +50,15 @@ if __name__ == "__main__":
     leftOKCount = 0
     rightOKCount = 0
 
-    for i in range(100000):
+    for i in range(10000):
 
         # 生成四张狼人
-        wolfPosition = getRandomPosition(4)
-        wolfPosition.sort()
+        raw_list = [0, 0, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1]
+        shuffle_list = shuffle(raw_list)
+        wolfPosition = []
+        for i in range(len(shuffle_list)):
+            if shuffle_list[i] == 0:
+                wolfPosition.append(i + 1)
 
         cornerOK = False
         randomGuessOK = False
@@ -95,22 +99,22 @@ if __name__ == "__main__":
     outputStr = "random guess Postion: ["
     for i in range(len(randomGuessPostion)):
         outputStr += " " + str(randomGuessPostion[i])
-    print outputStr + "] rate: " + str(randomGuessOkCount * 1.0 / 100000)
+    print outputStr + "] rate: " + str(randomGuessOkCount * 1.0 / 10000)
 
     # 打印边角位猜中概率
     outputStr = "corner  Postion: ["
     for i in range(len(cornerPartPostion)):
         outputStr += " " + str(cornerPartPostion[i])
-    print outputStr + "] rate: " + str(cornerOKCount * 1.0 / 100000)
+    print outputStr + "] rate: " + str(cornerOKCount * 1.0 / 10000)
 
     # 打印左边位猜中概率
     outputStr = "left  Postion: ["
     for i in range(len(leftPartPostion)):
         outputStr += " " + str(leftPartPostion[i])
-    print outputStr + "] rate: " + str(leftOKCount * 1.0 / 100000)
+    print outputStr + "] rate: " + str(leftOKCount * 1.0 / 10000)
 
     # 打印右边位猜中概率
     outputStr = "right  Postion: ["
     for i in range(len(rightPartPostion)):
         outputStr += " " + str(rightPartPostion[i])
-    print outputStr + "] rate: " + str(rightOKCount * 1.0 / 100000)
+    print outputStr + "] rate: " + str(rightOKCount * 1.0 / 10000)
